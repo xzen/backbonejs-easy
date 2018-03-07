@@ -1,3 +1,3 @@
 <div>
-  <p><%- locals.hello %> world</p>
+  <p><%- locals.hello %> <%- locals.world %></p>
 </div>
