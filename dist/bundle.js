@@ -7,7 +7,7 @@ const app = require('./lib/app.js');
 const Backbone = require('backbone');
 
 // Controllers
-const Controllers = require('./controllers/index.js');
+const App = require('./controllers/index.js');
 const Hello = require ('./models/index.js');
 
 var AppRouter = Backbone.Router.extend({
@@ -31,7 +31,41 @@ Backbone.history.start({
   'pushState': true
 });
 
-},{"./controllers/index.js":3,"./models/index.js":4,"backbone":7}],3:[function(require,module,exports){
+},{"./controllers/index.js":3,"./models/index.js":5,"backbone":8}],3:[function(require,module,exports){
+// Dependencies
+
+const path = require('path');
+
+// Frameworks
+const Backbone = require('backbone');
+const template = require('ak-template');
+
+//Controllers 
+const Input = require('./input');
+
+module.exports = Backbone.View.extend({
+  template: template("<div id=\"todo-list\"></div>\r\n"),
+  el: '#app',
+  /**
+   * Initialize
+   */
+  initialize: function() {
+    
+    this.render();
+  },
+  /**
+   * Render
+   */
+  render: function() {
+    const input = new Input();
+    this.$el.html(this.template());
+     const todo = document.querySelector('todo-list');
+     todo.appendChild(input.render());
+    return this;
+  }
+});
+
+},{"./input":4,"ak-template":6,"backbone":8,"path":10}],4:[function(require,module,exports){
 // Dependencies
 
 const path = require('path');
@@ -41,7 +75,7 @@ const Backbone = require('backbone');
 const template = require('ak-template');
 
 module.exports = Backbone.View.extend({
-  template: template("<div>\n  <p><%- locals.hello %> <%- locals.world %></p>\n</div>\n"),
+  template: template("<div>\r\n\t<input type=\"\" name=\"\">\t\r\n\t<button></button>\r\n</div>"),
   el: '#app',
   /**
    * Initialize
@@ -59,8 +93,7 @@ module.exports = Backbone.View.extend({
     return this;
   }
 });
-
-},{"ak-template":5,"backbone":7,"path":9}],4:[function(require,module,exports){
+},{"ak-template":6,"backbone":8,"path":10}],5:[function(require,module,exports){
 // Dependencies
 const Backbone = require('backbone');
 
@@ -71,10 +104,10 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":7}],5:[function(require,module,exports){
+},{"backbone":8}],6:[function(require,module,exports){
 module.exports = require('./lib/template');
 
-},{"./lib/template":6}],6:[function(require,module,exports){
+},{"./lib/template":7}],7:[function(require,module,exports){
 'use strict';
 
 /**
@@ -147,7 +180,7 @@ template.escape = function (str) {
     .replace(/'/g, '&#39;');
 };
 
-},{"stluafed":11}],7:[function(require,module,exports){
+},{"stluafed":12}],8:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -2071,7 +2104,7 @@ template.escape = function (str) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":8,"underscore":12}],8:[function(require,module,exports){
+},{"jquery":9,"underscore":13}],9:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
@@ -12437,7 +12470,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12665,7 +12698,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":10}],10:[function(require,module,exports){
+},{"_process":11}],11:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -12851,7 +12884,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12879,7 +12912,7 @@ var defaults = function (dest, src, recursive) {
  */
 module.exports = defaults;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

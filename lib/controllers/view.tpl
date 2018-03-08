@@ -1,3 +1,1 @@
-<div>
-  <p><%- locals.hello %> <%- locals.world %></p>
-</div>
+<div id="todo-list"></div>
