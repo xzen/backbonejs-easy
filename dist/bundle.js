@@ -7,10 +7,10 @@ const app = require('./lib/app.js');
 const Backbone = require('backbone');
 
 // Controllers
-const Controllers = require('./controllers/index.js');
-const Hello = require ('./models/index.js');
+const App = require('./controllers/index.js');
 
-var AppRouter = Backbone.Router.extend({
+// Route
+const AppRouter = Backbone.Router.extend({
   routes: {
     '*actions': 'defaultRoute'
   }
@@ -19,19 +19,48 @@ var AppRouter = Backbone.Router.extend({
 const appRouter = new AppRouter;
 
 appRouter.on('route:defaultRoute', () => {
-  const helloModel = new Hello
-  const controllers = new Controllers({
-    model: helloModel
-  });
+  const app = new App();
 
-  controllers.render();
+  app.render();
 });
 
 Backbone.history.start({
   'pushState': true
 });
 
-},{"./controllers/index.js":3,"./models/index.js":4,"backbone":7}],3:[function(require,module,exports){
+},{"./controllers/index.js":3,"backbone":8}],3:[function(require,module,exports){
+// Dependencies
+
+const path = require('path');
+
+// Frameworks
+const Backbone = require('backbone');
+const template = require('ak-template');
+
+// Controllers
+const Input = require('./input');
+const List = require('./list');
+
+module.exports = Backbone.View.extend({
+  template: template("<div id=\"todo-list\"></div>\n"),
+  el: '#app',
+  /**
+   * Render
+   */
+  render: function() {
+    this.$el.html(this.template());
+
+    this.input = new Input();
+    this.list = new List();
+
+    this.input.render();
+    this.list.render();
+
+    return this;
+  }
+});
+
+},{"./input":4,"./list":5,"ak-template":6,"backbone":8,"path":10}],4:[function(require,module,exports){
 // Dependencies
 
 const path = require('path');
@@ -41,40 +70,44 @@ const Backbone = require('backbone');
 const template = require('ak-template');
 
 module.exports = Backbone.View.extend({
-  template: template("<div>\n  <p><%- locals.hello %> <%- locals.world %></p>\n</div>\n"),
-  el: '#app',
-  /**
-   * Initialize
-   */
-  initialize: function() {
-    this.render();
-  },
+  template: template("<div class=\"input-todo\">\n  <input type=\"text\" value=\"\" placeholder=\"Entrez votre tâche\" />\n  <button>Ajouter</button>\n</div>\n"),
+  el: '#todo-list',
   /**
    * Render
    */
   render: function() {
-    console.log(this.model);
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.append(this.template());
 
     return this;
   }
 });
 
-},{"ak-template":5,"backbone":7,"path":9}],4:[function(require,module,exports){
+},{"ak-template":6,"backbone":8,"path":10}],5:[function(require,module,exports){
 // Dependencies
-const Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({
-  defaults: {
-    'hello': 'hello',
-    'world': 'world'
+const path = require('path');
+
+// Frameworks
+const Backbone = require('backbone');
+const template = require('ak-template');
+
+module.exports = Backbone.View.extend({
+  template: template("<div class=\"list\">\n  <ul>\n    <li>test</li>\n    <li>test2</li>\n    <li>test4</li>\n  </ul>\n</div>\n"),
+  el: '#todo-list',
+  /**
+   * Render
+   */
+  render: function() {
+    this.$el.append(this.template());
+
+    return this;
   }
 });
 
-},{"backbone":7}],5:[function(require,module,exports){
+},{"ak-template":6,"backbone":8,"path":10}],6:[function(require,module,exports){
 module.exports = require('./lib/template');
 
-},{"./lib/template":6}],6:[function(require,module,exports){
+},{"./lib/template":7}],7:[function(require,module,exports){
 'use strict';
 
 /**
@@ -147,7 +180,7 @@ template.escape = function (str) {
     .replace(/'/g, '&#39;');
 };
 
-},{"stluafed":11}],7:[function(require,module,exports){
+},{"stluafed":12}],8:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -2071,7 +2104,7 @@ template.escape = function (str) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":8,"underscore":12}],8:[function(require,module,exports){
+},{"jquery":9,"underscore":13}],9:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
@@ -12437,7 +12470,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12665,7 +12698,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":10}],10:[function(require,module,exports){
+},{"_process":11}],11:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -12851,7 +12884,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12879,7 +12912,7 @@ var defaults = function (dest, src, recursive) {
  */
 module.exports = defaults;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
