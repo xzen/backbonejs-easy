@@ -1,7 +1,7 @@
 <div class="list">
   <ul>
-    <li>test</li>
-    <li>test2</li>
-    <li>test4</li>
+    <% for (var i = 0, len = Object.keys(locals).length; i < len; i += 1){ %>
+    <li><%- locals[i].name %></li>
+    <% } %>
   </ul>
 </div>

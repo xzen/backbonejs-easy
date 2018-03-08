@@ -8,6 +8,7 @@ const Backbone = require('backbone');
 
 // Controllers
 const App = require('./controllers/index.js');
+const TodoListModel = require('./models/todo-list');
 
 // Route
 const AppRouter = Backbone.Router.extend({
@@ -19,7 +20,11 @@ const AppRouter = Backbone.Router.extend({
 const appRouter = new AppRouter;
 
 appRouter.on('route:defaultRoute', () => {
-  const app = new App();
+  const todoListModel = new TodoListModel(); 
+
+  const app = new App({
+    'model': todoListModel
+  });
 
   app.render();
 });
@@ -28,7 +33,7 @@ Backbone.history.start({
   'pushState': true
 });
 
-},{"./controllers/index.js":3,"backbone":8}],3:[function(require,module,exports){
+},{"./controllers/index.js":3,"./models/todo-list":6,"backbone":9}],3:[function(require,module,exports){
 // Dependencies
 
 const path = require('path');
@@ -51,7 +56,9 @@ module.exports = Backbone.View.extend({
     this.$el.html(this.template());
 
     this.input = new Input();
-    this.list = new List();
+    this.list = new List({
+      'model': this.model
+    });
 
     this.input.render();
     this.list.render();
@@ -60,7 +67,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./input":4,"./list":5,"ak-template":6,"backbone":8,"path":10}],4:[function(require,module,exports){
+},{"./input":4,"./list":5,"ak-template":7,"backbone":9,"path":11}],4:[function(require,module,exports){
 // Dependencies
 
 const path = require('path');
@@ -82,7 +89,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"ak-template":6,"backbone":8,"path":10}],5:[function(require,module,exports){
+},{"ak-template":7,"backbone":9,"path":11}],5:[function(require,module,exports){
 // Dependencies
 
 const path = require('path');
@@ -92,22 +99,36 @@ const Backbone = require('backbone');
 const template = require('ak-template');
 
 module.exports = Backbone.View.extend({
-  template: template("<div class=\"list\">\n  <ul>\n    <li>test</li>\n    <li>test2</li>\n    <li>test4</li>\n  </ul>\n</div>\n"),
+  template: template("<div class=\"list\">\n  <ul>\n    <% for (var i = 0, len = Object.keys(locals).length; i < len; i += 1){ %>\n    <li><%- locals[i].name %></li>\n    <% } %>\n  </ul>\n</div>\n"),
   el: '#todo-list',
   /**
    * Render
    */
   render: function() {
-    this.$el.append(this.template());
+    this.$el.append(this.template(this.model.toJSON()));
 
     return this;
   }
 });
 
-},{"ak-template":6,"backbone":8,"path":10}],6:[function(require,module,exports){
+},{"ak-template":7,"backbone":9,"path":11}],6:[function(require,module,exports){
+// Dependencies
+const Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({
+  'defaults': [{
+    'name': 'hello'
+  }, {
+    'name': 'test'
+  }, {
+    'name': 'world'
+  }]
+});
+
+},{"backbone":9}],7:[function(require,module,exports){
 module.exports = require('./lib/template');
 
-},{"./lib/template":7}],7:[function(require,module,exports){
+},{"./lib/template":8}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -180,7 +201,7 @@ template.escape = function (str) {
     .replace(/'/g, '&#39;');
 };
 
-},{"stluafed":12}],8:[function(require,module,exports){
+},{"stluafed":13}],9:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -2104,7 +2125,7 @@ template.escape = function (str) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":9,"underscore":13}],9:[function(require,module,exports){
+},{"jquery":10,"underscore":14}],10:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
@@ -12470,7 +12491,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12698,7 +12719,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":11}],11:[function(require,module,exports){
+},{"_process":12}],12:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -12884,7 +12905,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12912,7 +12933,7 @@ var defaults = function (dest, src, recursive) {
  */
 module.exports = defaults;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
